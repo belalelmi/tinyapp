@@ -49,13 +49,15 @@ app.get('/', (req, res) => {
 const generateRandomString = () => {
   return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 };
-const emailRetrieval = (email, emailInfo) => {
-  for (const user in emailInfo) {
-    if (emailInfo[user].email === email) {
-      return emailInfo[user];
+const getUserByEmail = (email, database) => {
+  if (database) {   //CHECK TO SEE IF THE DATABASE EXISTS// 
+    for (const user in database) {
+      if (database[user].email === email) {
+        return database[user];
+      }
     }
   }
-  return undefined;
+  return false;
 };
 const urlsForUser = (name, database) => {
   let userUrls = {};
@@ -153,7 +155,7 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  const user = emailRetrieval(req.body.email, users);
+  const user = getUserByEmail(req.body.email, users);
 
   if (user && bcrypt.compareSync(req.body.password, user.password)) {
     req.session.userID = user.userID;
@@ -177,21 +179,29 @@ app.get('/register', (req, res) => {
   res.render('urls_registration', templateVars);
 });
 
+// const registrationRedirect = (email, password) => {
+//   if (email === "" || password === "") {
+//     return false;
+//   }
+//   return true;
+// }
 app.post('/register', (req, res) => {
   if (req.body.email && req.body.password) {
-    if (!emailRetrieval(req.body.email, users)) {
+    if (!getUserByEmail(req.body.email, users)) {
       const userID = generateRandomString();
       users[userID] = {
-        userID,
+        userID: userID,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 10) //using 10 to cycle through the encryption 10 times 
       };
       req.session.userID = userID;
       res.redirect('/urls');
     } else {
-      res.send('Please enter a valid Email & Password combination!')
+      res.send('Please enter a NEW Email & Password combination!')
       res.redirect('/urls');
     }
+  } else {
+    res.send('Please enter a Valid Email & Password combination!')
   }
 });
 
