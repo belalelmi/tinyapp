@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const PORT = 8080;
 const morgan = require('morgan');
+const { getUserByEmail, urlsForUser } = require("./helper")
 app.use(morgan('dev'))
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,25 +50,25 @@ app.get('/', (req, res) => {
 const generateRandomString = () => {
   return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 };
-const getUserByEmail = (email, database) => {
-  if (database) {   //CHECK TO SEE IF THE DATABASE EXISTS// 
-    for (const user in database) {
-      if (database[user].email === email) {
-        return database[user];
-      }
-    }
-  }
-  return false;
-};
-const urlsForUser = (name, database) => {
-  let userUrls = {};
-  for (const shortURL in database) {
-    if (database[shortURL].userID === name) {
-      userUrls[shortURL] = database[shortURL];
-    }
-  }
-  return userUrls;
-};
+// const getUserByEmail = (email, database) => {
+//   if (database) {   //CHECK TO SEE IF THE DATABASE EXISTS// 
+//     for (const user in database) {
+//       if (database[user].email === email) {
+//         return database[user];
+//       }
+//     }
+//   }
+//   return false;
+// };
+// const urlsForUser = (name, database) => {
+//   let userUrls = {};
+//   for (const shortURL in database) {
+//     if (database[shortURL].userID === name) {
+//       userUrls[shortURL] = database[shortURL];
+//     }
+//   }
+//   return userUrls;
+// };
 
 app.get('/urls', (req, res) => {
   const userID = req.session.userID;
@@ -123,7 +124,7 @@ app.post('/urls/:shortURL', (req, res) => {
 
   if (req.session.userID && req.session.userID === urlDatabase[shortURL].userID) {
     urlDatabase[shortURL].longURL = req.body.longURL;
-    res.redirect(`/urls`);
+    res.redirect("/urls");
   } else {
     const error = 'Please login.';
     res.send(error);
