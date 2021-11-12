@@ -124,7 +124,7 @@ app.post('/urls/:shortURL', (req, res) => {
 
   if (req.session.userID && req.session.userID === urlDatabase[shortURL].userID) {
     urlDatabase[shortURL].longURL = req.body.longURL;
-    res.redirect("/urls");
+    res.redirect(`/urls`);
   } else {
     const error = 'Please login.';
     res.send(error);
@@ -167,8 +167,9 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  req.session.userID = null;
+  // req.session.userID = null;
   res.clearCookie('session');
+  res.clearCookie('session.sig');
   res.redirect('/urls');
 });
 
