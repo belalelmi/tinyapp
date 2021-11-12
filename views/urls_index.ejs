@@ -1,9 +1,15 @@
     <%- include('partials/_header') %>
     <main style="margin: 1em">
-      <h3>My URLs</h3>
+      <center>
+        <h3>BHE URLs</h3>
+      </center>
       <% if (user) { %>
       <table class="table">
         <thead>
+          <style>
+            h3 {text-align: center;}
+            h5 {text-align: center;}
+          </style>
           <tr>
             <th scope="col">Short URL</th>
             <th scope="col">Long URL</th>
@@ -32,11 +38,17 @@
           <% } %>
         </tbody>
       </table>
-      <a class="btn btn-primary" href="/urls/new">Create a New Short Link</a>
+      <center> 
+        <br
+        
+        >
+        <br>
+        <a class="btn btn-primary" href="/urls/new">Create a New Short Link</a>
+      </center>
       <% } else { %>
-      <h5 class="text-muted mt-3">
-        You must login or register to see your URLs.
-      </h5>
+        <center>
+          <h5 class="text-muted mt-3"> PLEASE LOGIN OR REGISTER! &#128512; </h5>
+        </center>
       <% } %>
     </main>
     <!-- Bootstrap JS -->

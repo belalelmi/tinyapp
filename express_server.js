@@ -124,7 +124,7 @@ app.post('/urls/:shortURL', (req, res) => {
 
   if (req.session.userID && req.session.userID === urlDatabase[shortURL].userID) {
     urlDatabase[shortURL].longURL = req.body.longURL;
-    res.redirect("/urls");
+    res.redirect(`/urls`);
   } else {
     const error = 'Please login.';
     res.send(error);
@@ -156,8 +156,7 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  const user = getUserByEmail(req.body.email, users);
-
+  const user = getUserByEmail(req.body.email, users); //storing the return 
   if (user && bcrypt.compareSync(req.body.password, user.password)) {
     req.session.userID = user.userID;
     res.redirect('/urls');
@@ -166,9 +165,9 @@ app.post('/login', (req, res) => {
   }
 });
 
-app.post('/logout', (req, res) => {
-  req.session.userID = null;
+app.post('/logout', (req, res) => { //mentor said to add seesion.sig 
   res.clearCookie('session');
+  res.clearCookie('session.sig');
   res.redirect('/urls');
 });
 
@@ -195,6 +194,7 @@ app.post('/register', (req, res) => {
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 10) //using 10 to cycle through the encryption 10 times 
       };
+      // console.log(users[userID].password)
       req.session.userID = userID;
       res.redirect('/urls');
     } else {
