@@ -6,6 +6,7 @@ const { getUserByEmail, urlsForUser } = require("./helper");
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
+
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieSession({ name: 'session', secret: 'notsosecretsession' }));
@@ -136,7 +137,6 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   res.redirect("/urls");
 });
 app.post("/urls/:shortURL/", (req, res) => {
-  // delete urlDatabase[req.params.shortURL];
   // console.log(req.params.shortURL)
   const longURL = req.body.longURL;
   const shortURL = req.params.shortURL;
