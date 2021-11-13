@@ -13,18 +13,9 @@ app.use(cookieSession({ name: 'session', secret: 'notsosecretsession' }));
 app.set('view engine', 'ejs');
 
 const urlDatabase = {
-  // "b2xVn2": {
-  //   shortUrl: "b2xVn2",
-  //   longUrl: "http://www.lighthouselabs.ca"
-  // }
 };
 
 const users = {
-  // "userRandomID": {
-  //   id: "userRandomID",
-  //   email: "user@example.com",
-  //   password: "purple-monkey-dinosaur"
-  // }
 };
 
 app.get('/', (req, res) => {
