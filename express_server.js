@@ -180,5 +180,5 @@ app.post('/register', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`TinyApp listening on port ${PORT}!`);
+  console.log(`Server running in development mode & listening on port ${PORT}:`);
 });
