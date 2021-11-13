@@ -4,11 +4,10 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-!["screenshot description"](#)
+!["Screenshot of the Welcome page"](https://github.com/belalelmi/tinyapp/blob/main/docs/greeting-page.png?raw=true)
 
-!["screenshot description"](#)
-
-## Dependencies
+!["screenshot of the login page"](https://github.com/belalelmi/tinyapp/blob/main/docs/login-page.png?raw=true)
+!["screenshot of the URLs page"](https://github.com/belalelmi/tinyapp/blob/main/docs/urls-page.png?raw=true)
 
 ```zsh
 - Node.js
