@@ -43,11 +43,9 @@ app.get('/urls', (req, res) => {
   const userID = req.session.userID;
   const userUrls = urlsForUser(userID, urlDatabase); //using the newly created urlsForUser function
   const templateVars = { urls: userUrls, user: users[userID] };
-
   if (!userID) {
     res.statusCode = 403;
   }
-
   res.render('urls_index', templateVars);
 });
 
