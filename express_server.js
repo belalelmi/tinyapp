@@ -3,26 +3,18 @@ const app = express();
 const PORT = 8080;
 const morgan = require('morgan');
 const { getUserByEmail, urlsForUser } = require("./helper")
-app.use(morgan('dev'))
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
-
 const cookieSession = require('cookie-session');
-app.use(cookieSession({ name: 'session', secret: 'belalhajielmi' }));
-
 const bcrypt = require('bcryptjs');
-
+app.use(morgan('dev'))
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieSession({ name: 'session', secret: 'belalhajielmi' }));
 app.set('view engine', 'ejs');
-
 
 const urlDatabase = {
   // "b2xVn2": {
   //   shortUrl: "b2xVn2",
   //   longUrl: "http://www.lighthouselabs.ca"
-  // },
-  // "9sm5xK": {
-  //   shortUrl: "9sm5xK",
-  //   longUrl: "http://www.google.com"
   // }
 };
 
@@ -31,11 +23,6 @@ const users = {
   //   id: "userRandomID",
   //   email: "user@example.com",
   //   password: "purple-monkey-dinosaur"
-  // },
-  // "userRandomID2": {
-  //   id: "userRandomID2",
-  //   email: "user2@example.com",
-  //   password: "dishwasher-funk"
   // }
 };
 
