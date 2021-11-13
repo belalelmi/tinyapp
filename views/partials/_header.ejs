@@ -14,18 +14,18 @@
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
-    <title>TinyApp</title>
+    <title>TinyApp BHE</title>
   </head>
   <body
     style="
       background-image: url(https://images.unsplash.com/photo-1539923779676-1a9bddf986db?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2874&q=80);
       background-size: cover;
       height: 100%;
-      color: darkgreen;
+      color: rgb(81, 174, 55);
     "
   >
     <header>
-      <nav class="navbar navbar-expand-md navbar-dark bg-success">
+      <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <a class="navbar-brand" href="/urls">TinyApp</a>
         <button
           class="navbar-toggler"
@@ -41,7 +41,7 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="/urls">My URLs</a>
-            <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
+            <a class="nav-item nav-link" href="/urls/new">Create A New Link</a>
           </div>
         </div>
         <% if (!user) { %>
@@ -52,7 +52,7 @@
         <% } else { %>
         <form class="form-inline my-1" action="/logout" method="POST">
           <div>
-            Logged in as: <%= user.email %>
+            <%= user.email %>
             <button type="submit" class="btn btn-outline-primary ml-3">
               Logout
             </button>

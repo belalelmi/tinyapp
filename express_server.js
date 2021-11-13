@@ -2,13 +2,13 @@ const express = require('express');
 const app = express();
 const PORT = 8080;
 const morgan = require('morgan');
-const { getUserByEmail, urlsForUser } = require("./helper")
+const { getUserByEmail, urlsForUser } = require("./helper");
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
-app.use(morgan('dev'))
+app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieSession({ name: 'session', secret: 'belalhajielmi' }));
+app.use(cookieSession({ name: 'session', secret: 'notsosecretsession' }));
 app.set('view engine', 'ejs');
 
 const urlDatabase = {
@@ -38,7 +38,7 @@ const generateRandomString = () => {
   return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 };
 // const getUserByEmail = (email, database) => {
-//   if (database) {   //CHECK TO SEE IF THE DATABASE EXISTS// 
+//   if (database) {   //CHECK TO SEE IF THE DATABASE EXISTS//
 //     for (const user in database) {
 //       if (database[user].email === email) {
 //         return database[user];
@@ -59,7 +59,7 @@ const generateRandomString = () => {
 
 app.get('/urls', (req, res) => {
   const userID = req.session.userID;
-  const userUrls = urlsForUser(userID, urlDatabase); //using the newly created urlsForUser 
+  const userUrls = urlsForUser(userID, urlDatabase); //using the newly created urlsForUser function
   const templateVars = { urls: userUrls, user: users[userID] };
 
   if (!userID) {
@@ -95,12 +95,9 @@ app.get('/urls/:shortURL', (req, res) => {
   const userUrls = urlsForUser(userID, urlDatabase);
   const templateVars = { urlDatabase, userUrls, shortURL, user: users[userID] };
 
-  if (!urlDatabase[shortURL]) {
-    const error = 'This short URL does not exist.';
-    res.send(error)
-  } else if (!userID || !userUrls[shortURL]) {
-    const error = 'You are not authorized to see this URL.';
-    res.send(error)
+  if (!urlDatabase[shortURL] || !userID) {
+    const error = 'Please try again!!';
+    res.send(error);
   } else {
     res.render('urls_show', templateVars);
   }
@@ -111,7 +108,7 @@ app.post('/urls/:shortURL', (req, res) => {
 
   if (req.session.userID && req.session.userID === urlDatabase[shortURL].userID) {
     urlDatabase[shortURL].longURL = req.body.longURL;
-    res.redirect(`/urls`);
+    res.redirect('/urls');
   } else {
     const error = 'Please login.';
     res.send(error);
@@ -129,7 +126,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 
   if (req.session.userID && req.session.userID === urlDatabase[shortURL].userID) {
     delete urlDatabase[shortURL];
-    res.redirect('/urls');
+    res.redirect('/urls'); //redirection for delete
   }
 });
 
@@ -143,12 +140,12 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  const user = getUserByEmail(req.body.email, users); //storing the return 
+  const user = getUserByEmail(req.body.email, users); //storing the return
   if (user && bcrypt.compareSync(req.body.password, user.password)) {
     req.session.userID = user.userID;
     res.redirect('/urls');
   } else {
-    res.send('Please enter a valid Email & Password combination!')
+    res.send('Please enter a valid Email & Password combination!\n\n If you dont have an account please register!');
   }
 });
 app.post("/urls/:shortURL/delete", (req, res) => {
@@ -166,7 +163,7 @@ app.post("/urls/:shortURL/", (req, res) => {
   res.redirect('/urls');
 });
 
-app.post('/logout', (req, res) => { //mentor said to add seesion.sig 
+app.post('/logout', (req, res) => { //mentor said to add seesion.sig
   req.session.userID = null;
   res.redirect('/urls');
 });
@@ -192,17 +189,17 @@ app.post('/register', (req, res) => {
       users[userID] = {
         userID: userID,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10) //using 10 to cycle through the encryption 10 times 
+        password: bcrypt.hashSync(req.body.password, 10) //using 10 to cycle through the encryption 10 times
       };
       // console.log(users[userID].password)
       req.session.userID = userID;
       res.redirect('/urls');
     } else {
-      res.send('Please enter a NEW Email & Password combination!')
+      res.send('Please enter a NEW Email & Password combination!');
       res.redirect('/urls');
     }
   } else {
-    res.send('Please enter a Valid Email & Password combination!')
+    res.send('Please enter a Valid Email & Password combination!');
   }
 });
 

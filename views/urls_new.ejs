@@ -14,27 +14,31 @@
       crossorigin="anonymous"
     />
 
-    <title>New URL - TinyApp Example</title>
+    <title>New URL - TinyApp BHE</title>
   </head>
 
   <body>
     <%- include('partials/_header') %>
 
     <main style="margin: 1em">
-      <h3>Create TinyURL</h3>
-      <form class="form-inline" action="/urls" method="POST">
-        <div class="form-group mb-2">
-          <label for="longURL">Enter a URL:</label>
-          <input
-            class="form-control"
-            type="text"
-            name="longURL"
-            placeholder="http://"
-            style="width: 300px; margin: 1em"
-          />
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
+      <!-- <center></center> -->
+      <br />
+      <br />
+      <h4>New Short Link</h4>
+      <center>
+        <form class="form-inline" action="/urls" method="POST">
+          <div class="form-group mb-2">
+            <input
+              class="form-control"
+              type="text"
+              name="longURL"
+              placeholder="http://"
+              style="width: 300px; margin: 1em"
+            />
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </center>
     </main>
     <!-- Bootstrap JS -->
     <script
