@@ -45,7 +45,7 @@ app.get('/urls', (req, res) => {
   const templateVars = { urls: userUrls, user: users[userID] };
 
   if (!userID) {
-    res.statusCode = 401;
+    res.statusCode = 403;
   }
 
   res.render('urls_index', templateVars);
