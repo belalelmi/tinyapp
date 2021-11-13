@@ -37,25 +37,6 @@ app.get('/', (req, res) => {
 const generateRandomString = () => {
   return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 };
-// const getUserByEmail = (email, database) => {
-//   if (database) {   //CHECK TO SEE IF THE DATABASE EXISTS//
-//     for (const user in database) {
-//       if (database[user].email === email) {
-//         return database[user];
-//       }
-//     }
-//   }
-//   return false;
-// };
-// const urlsForUser = (name, database) => {
-//   let userUrls = {};
-//   for (const shortURL in database) {
-//     if (database[shortURL].userID === name) {
-//       userUrls[shortURL] = database[shortURL];
-//     }
-//   }
-//   return userUrls;
-// };
 
 app.get('/urls', (req, res) => {
   const userID = req.session.userID;
@@ -143,6 +124,7 @@ app.post('/login', (req, res) => {
   const user = getUserByEmail(req.body.email, users); //storing the return
   if (user && bcrypt.compareSync(req.body.password, user.password)) {
     req.session.userID = user.userID;
+    console.log('LOGGED IN - hashedPassword:', user.password);
     res.redirect('/urls');
   } else {
     res.send('Please enter a valid Email & Password combination!\n\n If you dont have an account please register!');
@@ -159,12 +141,12 @@ app.post("/urls/:shortURL/", (req, res) => {
   const longURL = req.body.longURL;
   const shortURL = req.params.shortURL;
   urlDatabase[shortURL] = longURL;
-  // console.log(urlDatabase[shortURL])
   res.redirect('/urls');
 });
 
 app.post('/logout', (req, res) => { //mentor said to add seesion.sig
   req.session.userID = null;
+
   res.redirect('/urls');
 });
 
@@ -176,12 +158,6 @@ app.get('/register', (req, res) => {
   res.render('urls_registration', templateVars);
 });
 
-// const registrationRedirect = (email, password) => {
-//   if (email === "" || password === "") {
-//     return false;
-//   }
-//   return true;
-// }
 app.post('/register', (req, res) => {
   if (req.body.email && req.body.password) {
     if (!getUserByEmail(req.body.email, users)) {
@@ -191,7 +167,7 @@ app.post('/register', (req, res) => {
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 10) //using 10 to cycle through the encryption 10 times
       };
-      // console.log(users[userID].password)
+      console.log('hashedPassword:', users[userID].password);
       req.session.userID = userID;
       res.redirect('/urls');
     } else {
@@ -199,7 +175,7 @@ app.post('/register', (req, res) => {
       res.redirect('/urls');
     }
   } else {
-    res.send('Please enter a Valid Email & Password combination!');
+    res.send('Please enter a VALID Email & Password combination!');
   }
 });
 
