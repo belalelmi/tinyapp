@@ -94,7 +94,6 @@ app.get('/u/:shortURL', (req, res) => {
 
 app.post('/urls/:shortURL/delete', (req, res) => {
   const shortURL = req.params.shortURL;
-
   if (req.session.userID === urlDatabase[shortURL].userID) {
     delete urlDatabase[shortURL];
     res.redirect('/urls'); //redirection for delete
@@ -119,11 +118,6 @@ app.post('/login', (req, res) => {
   } else {
     res.send('Please enter a valid Email & Password combination!\n\n If you dont have an account please register!');
   }
-});
-app.post("/urls/:shortURL/delete", (req, res) => {
-  delete urlDatabase[req.params.shortURL];
-  console.log(req.params.shortURL + " was just DELETED!!");
-  res.redirect("/urls");
 });
 app.post("/urls/:shortURL/", (req, res) => {
   // console.log(req.params.shortURL)
